@@ -1,6 +1,6 @@
 function init(){
     //  Obtain canvas drawing area
-    var canvas  = document.getElementById("myCanvas");
+    var canvas  = document.getElementById("signature");
     var ctx     = canvas.getContext("2d");
     var drawing = false;
     var w = canvas.width;
