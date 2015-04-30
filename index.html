@@ -5,15 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>signature.js</title>
     <link rel="stylesheet" type="text/css" href="signature.css">
+    <link rel="stylesheet" type="text/css" href="theme.css">
     <script type="text/javascript" charset="UTF-8" src="signature.js"></script>
-    
+
 </head>
 <body onload="init()">
 
 <div id="container">
-    <canvas id="signature" width="800" height="160"></canvas>
-    <p>This text cannot be selected when you draw on the canvas above.</p>
-    <p><a href="http://github.com/mabdulra/signature">Get signature.js here.</a></p>
+    <canvas id="signature" width="800" height="160"></canvas><br>
+    <input type="hidden" name="uri" id="uri">
+    <button name="clear" id="clear">Clear Field</button> <button name="submit" id="submit">Submit Signature</button>
+    <p>This text cannot be selected when you draw on the above canvas. <a href="http://github.com/mabdulra/signature">Get signature.js</a>.</p>
+    <p id="status"><p>
 </div>
 
 </body>

@@ -1,3 +1,4 @@
+//  When the body loads, init() gets called
 function init(){
     //  Obtain canvas drawing area
     var canvas  = document.getElementById("signature");
@@ -5,11 +6,16 @@ function init(){
     var drawing = false;
     var w = canvas.width;
     var h = canvas.height;
-    
-    //  Initialize canvas background to white by drawing rectangle on it
-    ctx.fillStyle = "#ffffff";
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    //  Obtain container and buttons
+    var div     = document.getElementById("container");
+    var clear   = document.getElementById("clear");
+    var submit  = document.getElementById("submit");
+    var status  = document.getElementById("status");
+
+    //  Initialize the canvas and disabled submit button
+    reset(ctx,w,h);
+    submit.setAttribute("disabled",true);
 
     //  Start drawing process when user clicks the canvas
     canvas.onmousedown = function (e) {
@@ -27,9 +33,12 @@ function init(){
             var y = e.clientY - canvas.offsetTop;
             ctx.lineTo(x, y);
             ctx.stroke();
+
+            //  Enable the submit button
+            submit.removeAttribute("disabled");
         }
     };
-    
+
     //  Determine exit point of mouse and draw line to edge of pad
     canvas.onmouseout = function (e) {
         if( drawing ) {
@@ -60,11 +69,37 @@ function init(){
     };
 
     //  The container cannot be selected during a drawing process
-    var div = document.getElementById("container");
     div.onselectstart = function (e) {
         if( drawing ) {
             return false;
         }
         return true;
     };
+
+    //  The clear button erases the canvas
+    clear.onclick = function (e) {
+        reset(ctx,w,h);
+        submit.setAttribute("disabled",true);
+    }
+
+    //  The submit button makes an AJAX call to save the signature
+    //  Since this is a small example, the URI will be written to #uri
+    //  and status update will inform us of this. If you want to submit
+    //  a form, you can send URI to a script of your choice!
+    submit.onclick = function (e) {
+        //  Get data URL and display it as an image
+        var uri = canvas.toDataURL();
+        status.innerHTML = "<hr><p><b>Your signature has been processed!</b><br>You can extend the <i>submit.onclick</i> function to do anything you like with this signature.<br>Simply save it as a PNG? Sure! Send it to a server over AJAX? You got it!</p> <IMG src='"+uri+"' alt='Signature' title='Signature'><p>You can now make another signature, too. This old one will remain here until you his the <i>Submit Signature</i> button again.</p>";
+
+        //  Flush the signature field button
+        reset(ctx,w,h);
+        submit.setAttribute("disabled",true);
+    }
+}
+
+//  Reset the ctx by drawing a white rectangle over it
+function reset(ctx,w,h){
+    ctx.fillStyle = "#ffffff";
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillRect(0, 0, w, h);
 }
